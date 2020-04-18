@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IManager.Domain.Common
 {
-    public class CommonEntity
+    public abstract class CommonEntity
     {
         public int Id { get; set; }
         public ObjectState State { get; set; }

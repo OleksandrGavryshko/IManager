@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IManager.Domain.Common
 {
-    public class AuditableEntity : CommonEntity
+    public abstract class AuditableEntity : CommonEntity
     {
 
         public string CreatedBy { get; set; }
