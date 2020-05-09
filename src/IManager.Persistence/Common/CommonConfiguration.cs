@@ -11,7 +11,7 @@ namespace IManager.Persistence.Common
     {
         public void Configure(EntityTypeBuilder<TEntity> builder)
         {
-            builder.Property(p => p.State).va()
+            //builder.Property(p => p.State).va()
 
         }
     }
