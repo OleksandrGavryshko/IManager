@@ -30,7 +30,7 @@ namespace IManager
         {
             services.AddApplication();
             services.AddInfrastructure();
-            services.AddPersistence();
+            services.AddPersistence(Configuration);
 
             services.AddControllers();
         }
