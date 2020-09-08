@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IManager.Domain.Entities.Identity
 {
-    public class ApplicationUser : IdentityUser<Guid>
+    public class ApplicationRole : IdentityRole<Guid>
     {
     }
 }
