@@ -1,13 +1,13 @@
-﻿using IManager.Common.Interfaces;
+﻿using IManager.Common.Interfaces.Identity;
+using IManager.Common.Interfaces.Persistence;
 using IManager.Domain.Entities.Identity;
+using IManager.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace IManager.Persistence
 {
@@ -37,7 +37,11 @@ namespace IManager.Persistence
             }
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext<TUser, TRole, TKey>>());
+            services.AddTransient<IIdentityService, IdentityService>();
 
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext<TUser, TRole, TKey>>()
+                .AddDefaultTokenProviders();
 
             return services;
         }
