@@ -1,4 +1,5 @@
 ﻿using IManager.Common.Interfaces;
+using IManager.Common.Interfaces.Persistence;
 using IManager.Domain.Entities;
 using IManager.Domain.Entities.Car;
 using Microsoft.AspNetCore.Identity;
