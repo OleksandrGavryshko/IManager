@@ -1,5 +1,6 @@
 using IManager.Application;
 using IManager.Domain.Entities.Identity;
+using IManager.Extensions;
 using IManager.Infrastructure;
 using IManager.Persistence;
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +29,8 @@ namespace IManager
 
             services.AddPersistenceWithIdentity<ApplicationUser, ApplicationRole, Guid>(Configuration);
 
+            services.AddAuth();
+
             services.AddControllers();
         }
 
@@ -47,7 +50,10 @@ namespace IManager
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuth();
+
+            app.ConfigurePersistenceWithIdentity()
+                .UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

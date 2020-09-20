@@ -2,6 +2,7 @@
 using IManager.Common.Interfaces.Persistence;
 using IManager.Domain.Entities.Identity;
 using IManager.Persistence.Identity;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +47,12 @@ namespace IManager.Persistence
             return services;
         }
 
+        public static IApplicationBuilder ConfigurePersistenceWithIdentity(this IApplicationBuilder app)
+        {
+            app.UseAuthentication();
+
+            return app;
+        }
 
         public static void MigrateDatabase<TUser, TRole, TKey>(this IServiceScope scope)
             where TUser : IdentityUser<TKey>
