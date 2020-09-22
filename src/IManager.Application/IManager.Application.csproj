@@ -6,9 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.8" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IManager.Common\IManager.Common.csproj" />
     <ProjectReference Include="..\IManager.Domain\IManager.Domain.csproj" />
   </ItemGroup>
 

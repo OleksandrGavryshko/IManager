@@ -1,4 +1,5 @@
-﻿using IManager.Common.Interfaces.Identity;
+﻿using IManager.Common.Extensions;
+using IManager.Common.Interfaces.Identity;
 using IManager.Common.Interfaces.Persistence;
 using IManager.Domain.Entities.Identity;
 using IManager.Persistence.Identity;
@@ -14,34 +15,39 @@ namespace IManager.Persistence
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddPersistenceWithIdentity<TUser, TRole, TKey>(this IServiceCollection services, IConfiguration configuration)
-            where TUser : IdentityUser<TKey>
-            where TRole : IdentityRole<TKey>
-            where TKey : IEquatable<TKey>
+        public const string DefaultSchema = "IMS";
+        public const string DefaultConnectionName = "DefaultConnection";
+        public const string UseInMemoryDatabaseName = "IManagerApplicationDb";
+        public const string DefaultMigrationsTableName = "__MigrationsHistory";
+
+        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+            var appSettings = configuration.GetAppSettings();
+
+            if (appSettings.UseInMemoryDatabase)
             {
-                services.AddDbContext<ApplicationDbContext<TUser, TRole, TKey>>(options =>
-                    options.UseInMemoryDatabase("IManagerApplicationDb"));
+                services.AddDbContext<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>(options =>
+                        options.UseInMemoryDatabase(UseInMemoryDatabaseName)
+                    );
             }
             else
             {
-                services.AddDbContext<ApplicationDbContext<TUser, TRole, TKey>>(options =>
+                services.AddDbContext<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>(options =>
                     options.UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
+                        configuration.GetConnectionString(DefaultConnectionName),
                         b =>
                         {
-                            b.MigrationsHistoryTable("__MigrationsHistory", "IMS");
-                            b.MigrationsAssembly(typeof(ApplicationDbContext<TUser, TRole, TKey>).Assembly.FullName);
+                            b.MigrationsHistoryTable(DefaultMigrationsTableName, DefaultSchema);
+                            b.MigrationsAssembly(typeof(ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>).Assembly.FullName);
                         }
                     ));
             }
 
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext<TUser, TRole, TKey>>());
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>());
             services.AddTransient<IIdentityService, IdentityService>();
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext<TUser, TRole, TKey>>()
+                .AddEntityFrameworkStores<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>()
                 .AddDefaultTokenProviders();
 
             return services;
@@ -54,17 +60,14 @@ namespace IManager.Persistence
             return app;
         }
 
-        public static void MigrateDatabase<TUser, TRole, TKey>(this IServiceScope scope)
-            where TUser : IdentityUser<TKey>
-            where TRole : IdentityRole<TKey>
-            where TKey : IEquatable<TKey>
+        public static void MigrateDatabase(this IServiceScope scope)
         {
 
             var services = scope.ServiceProvider;
 
             try
             {
-                var dbContext = services.GetRequiredService<ApplicationDbContext<TUser, TRole, TKey>>();
+                var dbContext = services.GetRequiredService<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>();
 
                 if (dbContext.Database.IsSqlServer())
                 {

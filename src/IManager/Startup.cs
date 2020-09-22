@@ -1,4 +1,5 @@
 using IManager.Application;
+using IManager.Common.Models.Application;
 using IManager.Domain.Entities.Identity;
 using IManager.Extensions;
 using IManager.Infrastructure;
@@ -24,12 +25,12 @@ namespace IManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplication();
+            //TODO: LOGGER
+            services.AddApplication(Configuration);
             services.AddInfrastructure();
+            services.AddPersistence(Configuration);
 
-            services.AddPersistenceWithIdentity<ApplicationUser, ApplicationRole, Guid>(Configuration);
-
-            services.AddAuth();
+            services.AddAuth(Configuration);
 
             services.AddControllers();
         }
@@ -38,7 +39,7 @@ namespace IManager
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             using var scope = app.ApplicationServices.CreateScope();
-            scope.MigrateDatabase<ApplicationUser, ApplicationRole, Guid>();
+            scope.MigrateDatabase();
 
             if (env.IsDevelopment())
             {

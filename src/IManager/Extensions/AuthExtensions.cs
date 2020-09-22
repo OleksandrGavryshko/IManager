@@ -4,17 +4,17 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using IManager.Common.Extensions;
 
 namespace IManager.Extensions
 {
     public static class AuthExtensions
     {
-        public static IServiceCollection AddAuth(
-            this IServiceCollection services
-            //,
-            //JwtSettings jwtSettings
-            )
+        public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
         {
+            var appSettings = configuration.GetAppSettings();
+
             services
                 .AddAuthorization(options =>
                 {
@@ -31,15 +31,9 @@ namespace IManager.Extensions
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        //"Issuer": "http://localhost:5000",
-                        //"Secret": "veryVerySuperSecretKey",
-                        //"ExpirationInDays": 30
-                        ValidIssuer = "http://localhost:5000", //jwtSettings.Issuer,
-                        ValidAudience = "http://localhost:5000", //jwtSettings.Issuer,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                            "veryVerySuperSecretKey"
-                            //jwtSettings.Secret
-                            )),
+                        ValidIssuer = appSettings.JwtSettings.Issuer,
+                        ValidAudience = appSettings.JwtSettings.Issuer,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.JwtSettings.Secret)),
                         ClockSkew = TimeSpan.Zero
                     };
                 });
