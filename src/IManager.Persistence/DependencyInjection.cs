@@ -1,6 +1,7 @@
 ﻿using IManager.Common.Extensions;
 using IManager.Common.Interfaces.Identity;
 using IManager.Common.Interfaces.Persistence;
+using IManager.Common.Models.Application;
 using IManager.Domain.Entities.Identity;
 using IManager.Persistence.Identity;
 using Microsoft.AspNetCore.Builder;
@@ -23,27 +24,10 @@ namespace IManager.Persistence
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             var appSettings = configuration.GetAppSettings();
-
-            if (appSettings.UseInMemoryDatabase)
-            {
-                services.AddDbContext<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>(options =>
-                        options.UseInMemoryDatabase(UseInMemoryDatabaseName)
-                    );
-            }
-            else
-            {
-                services.AddDbContext<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>(options =>
-                    options.UseSqlServer(
-                        configuration.GetConnectionString(DefaultConnectionName),
-                        b =>
-                        {
-                            b.MigrationsHistoryTable(DefaultMigrationsTableName, DefaultSchema);
-                            b.MigrationsAssembly(typeof(ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>).Assembly.FullName);
-                        }
-                    ));
-            }
+            InitDbContext(services, configuration, appSettings);
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>());
+
             services.AddTransient<IIdentityService, IdentityService>();
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -87,6 +71,28 @@ namespace IManager.Persistence
                 logger.LogError(ex, "An error occurred while migrating or seeding the database.");
 
                 throw;
+            }
+        }
+
+        private static void InitDbContext(IServiceCollection services, IConfiguration configuration, AppSettings appSettings)
+        {
+            if (appSettings.UseInMemoryDatabase)
+            {
+                services.AddDbContext<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>(options =>
+                        options.UseInMemoryDatabase(UseInMemoryDatabaseName)
+                    );
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>(options =>
+                    options.UseSqlServer(
+                        configuration.GetConnectionString(DefaultConnectionName),
+                        b =>
+                        {
+                            b.MigrationsHistoryTable(DefaultMigrationsTableName, DefaultSchema);
+                            b.MigrationsAssembly(typeof(ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>).Assembly.FullName);
+                        }
+                    ));
             }
         }
     }

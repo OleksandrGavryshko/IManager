@@ -1,4 +1,5 @@
 ﻿using IManager.Common.Models;
+using IManager.Domain.Entities.Identity;
 using System;
 using System.Threading.Tasks;
 
@@ -6,10 +7,11 @@ namespace IManager.Common.Interfaces.Identity
 {
     public interface IIdentityService
     {
-        Task<string> GetUserNameAsync(Guid userId);
+        Task CreateUserAsync(ApplicationUser user, string password);
+        Task SignInAsync(string login, string password);
 
-        Task<(Result Result, Guid UserId)> CreateUserAsync(string userName, string password);
 
-        Task<Result> DeleteUserAsync(Guid userId);
+
+        //Task<Result> DeleteUserAsync(Guid userId);
     }
 }
