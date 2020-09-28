@@ -1,4 +1,5 @@
 using IManager.Application;
+using IManager.Common.Interfaces.Identity;
 using IManager.Common.Models.Application;
 using IManager.Domain.Entities.Identity;
 using IManager.Extensions;
@@ -26,6 +27,7 @@ namespace IManager
         public void ConfigureServices(IServiceCollection services)
         {
             //TODO: LOGGER
+            services.AddScoped<ITokenManager, TokenManager>();
             services.AddApplication(Configuration);
             services.AddInfrastructure();
             services.AddPersistence(Configuration);

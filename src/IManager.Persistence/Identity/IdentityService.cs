@@ -25,35 +25,37 @@ namespace IManager.Persistence.Identity
             _roleManager = roleManager;
         }
 
-        //return model ?
-        public async Task CreateUserAsync(ApplicationUser user, string password)
+        public async Task<Response<bool>> CreateUserAsync(ApplicationUser user, string password)
         {
+            var response = new Response<bool>(false);
+                 
             IdentityResult userCreateResult = await _userManager.CreateAsync(user, password);
-            
+
             if (userCreateResult.Succeeded)
-            {
-                //return Created(string.Empty, string.Empty);
-                //return OK
-            }
+                response.Result = true;
             else
-            {
-                //return Problem(userCreateResult.Errors.First().Description, null, 500);
-                //map errors
-            }
+                response.AddRangeErrors(userCreateResult.Errors.Select(x => x.Description));
+
+            return response;
         }
 
-        //return model ?
-        public async Task SignInAsync(string login, string password)
+        public async Task<Response<ApplicationUser>> SignInAsync(string login, string password)
         {
-            var user = _userManager.Users.SingleOrDefault(u => u.UserName == login);
-            if (user is null)
+            var response = new Response<ApplicationUser>(null);
+
+            response.Result = _userManager.Users.SingleOrDefault(u => u.UserName == login);
+            if (response.Result is null)
             {
-                //return; "User not found"
+                response.AddError("User not found");
+                return response;
             }
 
-            var userSigninResult = await _userManager.CheckPasswordAsync(user, password);
-            //return userSigninResult
-            //GenerateJwt(user, roles)
+            var userSigninResult = await _userManager.CheckPasswordAsync(response.Result, password);
+
+            if(!userSigninResult)
+                response.AddError("Incorrect password");
+
+            return response;
         }
 
 

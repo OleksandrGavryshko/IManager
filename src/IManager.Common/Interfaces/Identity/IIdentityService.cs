@@ -7,8 +7,8 @@ namespace IManager.Common.Interfaces.Identity
 {
     public interface IIdentityService
     {
-        Task CreateUserAsync(ApplicationUser user, string password);
-        Task SignInAsync(string login, string password);
+        Task<Response<bool>> CreateUserAsync(ApplicationUser user, string password);
+        Task<Response<ApplicationUser>> SignInAsync(string login, string password);
 
 
 
