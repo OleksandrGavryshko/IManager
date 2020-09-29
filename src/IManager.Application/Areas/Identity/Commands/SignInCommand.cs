@@ -49,8 +49,8 @@ namespace IManager.Application.Areas.Identity.Commands
                     response.Result = new SignInCommandResponse();
                     response.Result.User = signInResponse.Result;
 
-                    //todo: get roles
-                    var roles = new List<string> { "user" };// await _userManager.GetRolesAsync(user);
+                    //todo: get roles // await _userManager.GetRolesAsync(user);
+                    var roles = new List<string> { "user" };
                     response.Result.Token = tokenManager.GenerateToken(response.Result.User, roles, appSettings.JwtSettings);
 
 

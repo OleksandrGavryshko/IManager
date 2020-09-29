@@ -43,8 +43,10 @@ namespace IManager.Application.Areas.Identity.Commands
                 {
                     response.Errors = createUserResult.Errors;
                 }
-
-                response.Result = true;
+                else
+                {
+                    response.Result = true;
+                }
             }
             catch (Exception ex)
             {
