@@ -1,11 +1,12 @@
 ﻿using IManager.Domain.Entities;
 using IManager.Domain.Entities.Car;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace IManager.Common.Interfaces
+namespace IManager.Common.Interfaces.Persistence
 {
     public interface IApplicationDbContext
     {

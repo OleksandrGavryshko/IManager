@@ -1,18 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using IManager.Application;
+using IManager.Common.Interfaces.Identity;
+using IManager.Common.Models.Application;
+using IManager.Domain.Entities.Identity;
+using IManager.Extensions;
 using IManager.Infrastructure;
 using IManager.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System;
 
 namespace IManager
 {
@@ -28,9 +26,13 @@ namespace IManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplication();
+            //TODO: LOGGER
+            services.AddScoped<ITokenManager, TokenManager>();
+            services.AddApplication(Configuration);
             services.AddInfrastructure();
             services.AddPersistence(Configuration);
+
+            services.AddAuth(Configuration);
 
             services.AddControllers();
         }
@@ -38,9 +40,12 @@ namespace IManager
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using var scope = app.ApplicationServices.CreateScope();
+            scope.MigrateDatabase();
+
             if (env.IsDevelopment())
             {
-                //app.UseDatabaseErrorPage();
+                // app.UseDatabaseErrorPage();
                 app.UseDeveloperExceptionPage();
             }
 
@@ -48,7 +53,10 @@ namespace IManager
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuth();
+
+            app.ConfigurePersistenceWithIdentity()
+                .UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
