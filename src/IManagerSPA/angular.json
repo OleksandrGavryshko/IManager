@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "IManagerSPA"
+    }
+  },
+  "defaultProject": "IManagerSPA",
+  "cli": {
+    "analytics": false
+  }
 }
