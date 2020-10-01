@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "ng: serve IManagerSPA",
+			"type": "npm",
+			"script": "ng -- serve --port=2100",
+			"path": "src/IManagerSPA/",
+			"problemMatcher": []
+		}
+	]
+}
