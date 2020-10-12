@@ -1,0 +1,63 @@
+.splash-container {
+  padding-top: 55px;
+  width: 800px;
+  margin: 0 auto;
+}
+
+.splash-container .user-message {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: #2cc185;
+    color: #fff;
+    padding: 155px 30px 40px;
+}
+
+.splash-container .form-message {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 60px 30px 40px;
+    background-color: #363636;
+    color: #d4d4d4;
+}
+
+.splash-container .form-group {
+    margin: 0;
+}
+
+.splash-container .input-group {
+    border-bottom: 2px solid #3f3f3f;
+    padding: 6px 0;
+}
+
+.splash-container .input-group .input-group-prepend {
+    padding: .6rem .9rem;
+    min-width: 3.847rem;
+    font-size: 1.23rem;
+    margin-right: 0;
+}
+
+.btn-group:first-child, .input-group-append:first-child, .input-group-btn:first-child, .input-group-prepend:first-child {
+    border-right-color: transparent;
+}
+
+.splash-container .input-group .form-control {
+    border: 0;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #989898;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 500;
+    height: 36px;
+}
