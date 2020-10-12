@@ -34,6 +34,8 @@ namespace IManager
 
             services.AddAuth(Configuration);
 
+            services.AddSwaggerDocument();
+
             services.AddControllers();
         }
 
@@ -50,13 +52,13 @@ namespace IManager
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuth();
-
             app.ConfigurePersistenceWithIdentity()
                 .UseAuthorization();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseEndpoints(endpoints =>
             {
