@@ -34,7 +34,39 @@ namespace IManager
 
             services.AddAuth(Configuration);
 
-            services.AddSwaggerDocument();
+            //services.AddSwaggerDocument();
+
+            services.AddSwaggerDocument(settings =>
+            {
+                settings.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "Example API";
+                    document.Info.Description = "REST API for example.";
+                };
+            });
+
+            //services.AddSwaggerDocument(config =>
+            //{
+            //    config.PostProcess = document =>
+            //    {
+            //        document.Info.Version = "v1";
+            //        document.Info.Title = "ToDo API";
+            //        document.Info.Description = "A simple ASP.NET Core web API";
+            //        document.Info.TermsOfService = "None";
+            //        document.Info.Contact = new NSwag.OpenApiContact
+            //        {
+            //            Name = "Shayne Boyer",
+            //            Email = string.Empty,
+            //            Url = "https://twitter.com/spboyer"
+            //        };
+            //        document.Info.License = new NSwag.OpenApiLicense
+            //        {
+            //            Name = "Use under LICX",
+            //            Url = "https://example.com/license"
+            //        };
+            //    };
+            //});
 
             services.AddControllers();
         }
