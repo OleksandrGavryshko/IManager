@@ -28,5 +28,11 @@ namespace IManager.Controllers
             return await Mediator.Send(command);
         }
 
+        [HttpPost]
+        public async Task<BaseMediatorResponse<SignOutCommandResponse>> SignOut(SignOutCommand command)
+        {
+            return await Mediator.Send(command);
+        }
+
     }
 }

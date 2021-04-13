@@ -15,14 +15,17 @@ namespace IManager.Persistence.Identity
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager
+            RoleManager<ApplicationRole> roleManager,
+            SignInManager<ApplicationUser> signInManager
             )
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         public async Task<Response<bool>> CreateUserAsync(ApplicationUser user, string password)
@@ -58,7 +61,27 @@ namespace IManager.Persistence.Identity
             return response;
         }
 
+        public async Task SignOutAsync(string login)
+        {
+            var response = new Response<ApplicationUser>(null);
 
+
+            await _signInManager.SignOutAsync();
+
+            //response.Result = _userManager.Users.SingleOrDefault(u => u.UserName == login);
+            //if (response.Result is null)
+            //{
+            //    response.AddError("User not found");
+            //    return response;
+            //}
+
+            //var userSigninResult = await _userManager. CheckPasswordAsync(response.Result, password);
+
+            //if (!userSigninResult)
+            //    response.AddError("Incorrect password");
+
+            //return response;
+        }
 
 
         //public async Task<Result> DeleteUserAsync(Guid userId)

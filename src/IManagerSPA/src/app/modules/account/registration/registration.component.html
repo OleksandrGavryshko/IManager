@@ -1,1 +1,48 @@
-<p>registration-form works!</p>
+<!-- TODO: translation -->
+<div class="container">
+    <div class="row mt-4">
+      <div class="col-lg-5 col-md-8 mx-auto mt-md-5 p-5 border rounded bg-white">
+  
+        <div class="border-bottom pb-4 text-center">
+          <!-- <img src="/img/logo.svg" class="logo"> -->
+          <h1>GO-Code</h1>
+        </div>
+  
+        <div class="mt-4 mb-1">
+          <div class="text-center">
+            <h4>Rejestracja</h4>
+          </div>
+  
+          <form [formGroup]="form" (ngSubmit)="onRegister()">
+            <div class="form-group">
+              <input formControlName="email" class="form-control valid" type="text" placeholder="Nazwa użytkownika" />
+              <span *ngIf="(form.get('email').touched || submitted) && form.get('email').hasError('required')" class="errors">
+                Field is required
+              </span>
+              <span *ngIf="(form.get('email').touched || submitted) && form.get('email').hasError('email')" class="errors">
+                Field is not valid email
+              </span>
+            </div>
+            <div class="form-group">
+              <input formControlName="password" class="form-control valid" type="password" placeholder="Hasło" />
+              <span *ngIf="(form.get('password').touched || submitted) && form.get('password').hasError('required')" class="errors">
+                Field is required
+              </span>
+              
+            </div>
+  
+            <div class="d-flex justify-content-between align-content-center align-items-center">
+             
+              <div class="form-group mb-0">
+                <button type="submit" id="btn-login" class="px-4 btn btn-primary">
+                  Zarejestruj się
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  

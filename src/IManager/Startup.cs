@@ -32,6 +32,8 @@ namespace IManager
             services.AddInfrastructure();
             services.AddPersistence(Configuration);
 
+            services.AddCors();
+
             services.AddAuth(Configuration);
 
             //services.AddSwaggerDocument();
@@ -77,6 +79,15 @@ namespace IManager
             using var scope = app.ApplicationServices.CreateScope();
             scope.MigrateDatabase();
 
+            app.UseCors(options =>
+            {
+                options
+                .WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+            });
+
             if (env.IsDevelopment())
             {
                 // app.UseDatabaseErrorPage();
@@ -91,6 +102,8 @@ namespace IManager
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
+
+            
 
             app.UseEndpoints(endpoints =>
             {

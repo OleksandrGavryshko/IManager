@@ -1,5 +1,11 @@
+import { AuthClient, SignInCommand } from 'src/app/services/api.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { FormatWidth } from '@angular/common';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { SnotifyService } from 'ng-snotify';
 
 @Component({
   selector: 'app-login',
@@ -8,45 +14,46 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  public loginForm: FormGroup;
+
+  public form: FormGroup;
   public submitted = false;
 
   constructor(
     private formBuilder: FormBuilder,
-
+    private authClient: AuthClient,
+    private router: Router,
+    private snotifyService: SnotifyService
   ) { }
 
   ngOnInit(): void {
-    this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
+    this.form = this.formBuilder.group({
+      email: ['', [ Validators.required, Validators.email ]],
       password: ['', Validators.required]
     });
   }
 
-  // convenience getter for easy access to form fields
-  get f() { return this.loginForm.controls; }
-  
-  onSubmit() {
+  onLogin() {
     this.submitted = true;
 
-    console.log(this.loginForm);
-    // stop here if form is invalid
-    if (this.loginForm.invalid) {
+    if (this.form.invalid)
       return;
-    }
 
-    // this.loading = true;
-    // this.authenticationService.login(this.f.username.value, this.f.password.value)
-    //   .pipe(first())
-    //   .subscribe(
-    //     data => {
-    //       // this.router.navigate([this.returnUrl]);
-    //     },
-    //     error => {
-    //       console.log(error);
-    //       // this.alertService.error(error);
-    //       // this.loading = false;
-    //     });
+      const model = SignInCommand.fromJS(this.form.value);
+
+      this.authClient.signIn(model).subscribe(response => {
+        //if (this.apiErrorHandler.errorsExistInResponse(response)) return;
+
+        if(response.errors && response.errors.length > 0){
+          response.errors.forEach(e=> this.snotifyService.error(e));
+          return;
+        }
+
+        console.log(response);
+        localStorage.setItem('token', response.result.token);
+        this.router.navigateByUrl('/');
+
+      });
+
   }
 
 

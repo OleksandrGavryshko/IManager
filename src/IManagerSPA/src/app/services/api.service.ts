@@ -7,29 +7,26 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-import { ServiceBase } from './api-base-services/api.servicesbase';
-import { ServiceBaseConfiguration } from './api-base-services/api.service-base-configuration';
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
-import { Observable, from as _observableFrom, throwError as _observableThrow, of as _observableOf } from 'rxjs';
+import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
-export module IM_API {
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IAuthClient {
     signUp(command: CreateUserCommand): Observable<BaseMediatorResponseOfBoolean>;
     signIn(command: SignInCommand): Observable<BaseMediatorResponseOfSignInCommandResponse>;
+    signOut(command: SignOutCommand): Observable<BaseMediatorResponseOfSignOutCommandResponse>;
 }
 
 @Injectable()
-export class AuthClient extends ServiceBase implements IAuthClient {
+export class AuthClient implements IAuthClient {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(@Inject(ServiceBaseConfiguration) configuration: ServiceBaseConfiguration, @Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        super(configuration);
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
@@ -50,14 +47,12 @@ export class AuthClient extends ServiceBase implements IAuthClient {
             })
         };
 
-        return _observableFrom(this.transformOptions(options_)).pipe(_observableMergeMap(transformedOptions_ => {
-            return this.http.request("post", url_, transformedOptions_);
-        })).pipe(_observableMergeMap((response_: any) => {
-            return this.transformResult(url_, response_, (r) => this.processSignUp(<any>r));
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSignUp(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.transformResult(url_, response_, (r) => this.processSignUp(<any>r));
+                    return this.processSignUp(<any>response_);
                 } catch (e) {
                     return <Observable<BaseMediatorResponseOfBoolean>><any>_observableThrow(e);
                 }
@@ -104,14 +99,12 @@ export class AuthClient extends ServiceBase implements IAuthClient {
             })
         };
 
-        return _observableFrom(this.transformOptions(options_)).pipe(_observableMergeMap(transformedOptions_ => {
-            return this.http.request("post", url_, transformedOptions_);
-        })).pipe(_observableMergeMap((response_: any) => {
-            return this.transformResult(url_, response_, (r) => this.processSignIn(<any>r));
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSignIn(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.transformResult(url_, response_, (r) => this.processSignIn(<any>r));
+                    return this.processSignIn(<any>response_);
                 } catch (e) {
                     return <Observable<BaseMediatorResponseOfSignInCommandResponse>><any>_observableThrow(e);
                 }
@@ -141,6 +134,58 @@ export class AuthClient extends ServiceBase implements IAuthClient {
         }
         return _observableOf<BaseMediatorResponseOfSignInCommandResponse>(<any>null);
     }
+
+    signOut(command: SignOutCommand): Observable<BaseMediatorResponseOfSignOutCommandResponse> {
+        let url_ = this.baseUrl + "/api/Auth/SignOut";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSignOut(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSignOut(<any>response_);
+                } catch (e) {
+                    return <Observable<BaseMediatorResponseOfSignOutCommandResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BaseMediatorResponseOfSignOutCommandResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSignOut(response: HttpResponseBase): Observable<BaseMediatorResponseOfSignOutCommandResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BaseMediatorResponseOfSignOutCommandResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BaseMediatorResponseOfSignOutCommandResponse>(<any>null);
+    }
 }
 
 export interface ITestClient {
@@ -149,13 +194,12 @@ export interface ITestClient {
 }
 
 @Injectable()
-export class TestClient extends ServiceBase implements ITestClient {
+export class TestClient implements ITestClient {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(@Inject(ServiceBaseConfiguration) configuration: ServiceBaseConfiguration, @Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        super(configuration);
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
@@ -172,14 +216,12 @@ export class TestClient extends ServiceBase implements ITestClient {
             })
         };
 
-        return _observableFrom(this.transformOptions(options_)).pipe(_observableMergeMap(transformedOptions_ => {
-            return this.http.request("get", url_, transformedOptions_);
-        })).pipe(_observableMergeMap((response_: any) => {
-            return this.transformResult(url_, response_, (r) => this.processGetValue(<any>r));
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetValue(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.transformResult(url_, response_, (r) => this.processGetValue(<any>r));
+                    return this.processGetValue(<any>response_);
                 } catch (e) {
                     return <Observable<string>><any>_observableThrow(e);
                 }
@@ -222,14 +264,12 @@ export class TestClient extends ServiceBase implements ITestClient {
             })
         };
 
-        return _observableFrom(this.transformOptions(options_)).pipe(_observableMergeMap(transformedOptions_ => {
-            return this.http.request("get", url_, transformedOptions_);
-        })).pipe(_observableMergeMap((response_: any) => {
-            return this.transformResult(url_, response_, (r) => this.processGetValueAuth(<any>r));
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetValueAuth(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.transformResult(url_, response_, (r) => this.processGetValueAuth(<any>r));
+                    return this.processGetValueAuth(<any>response_);
                 } catch (e) {
                     return <Observable<string>><any>_observableThrow(e);
                 }
@@ -596,6 +636,114 @@ export interface ISignInCommand {
     password?: string | undefined;
 }
 
+export class BaseMediatorResponseOfSignOutCommandResponse implements IBaseMediatorResponseOfSignOutCommandResponse {
+    result?: SignOutCommandResponse | undefined;
+    errors?: string[] | undefined;
+
+    constructor(data?: IBaseMediatorResponseOfSignOutCommandResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.result = _data["result"] ? SignOutCommandResponse.fromJS(_data["result"]) : <any>undefined;
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): BaseMediatorResponseOfSignOutCommandResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new BaseMediatorResponseOfSignOutCommandResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        return data; 
+    }
+}
+
+export interface IBaseMediatorResponseOfSignOutCommandResponse {
+    result?: SignOutCommandResponse | undefined;
+    errors?: string[] | undefined;
+}
+
+export class SignOutCommandResponse implements ISignOutCommandResponse {
+
+    constructor(data?: ISignOutCommandResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): SignOutCommandResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new SignOutCommandResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export interface ISignOutCommandResponse {
+}
+
+export class SignOutCommand implements ISignOutCommand {
+
+    constructor(data?: ISignOutCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): SignOutCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new SignOutCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export interface ISignOutCommand {
+}
+
 export class SwaggerException extends Error {
     message: string;
     status: number;
@@ -641,6 +789,4 @@ function blobToText(blob: any): Observable<string> {
             reader.readAsText(blob);
         }
     });
-}
-
 }

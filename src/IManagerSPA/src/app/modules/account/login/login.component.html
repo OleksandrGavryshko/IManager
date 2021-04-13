@@ -1,45 +1,52 @@
-<!-- https://foxythemes.net/preview/products/maisonnette/pages-login.php?theme=default -->
-<div class="main-content container">
-  <div class="splash-container row">
-    <div class="col-md-6 user-message"><span class="splash-message text-right">Hello!<br> is good to<br> see you
-        again</span><span class="alternative-message text-right">Don't have an account? <a href="pages-sign-up.php">Sign
-          Up</a></span></div>
-    <div class="col-md-6 form-message"><img class="logo-img mb-4" src="assets/img/logo-2x.png" alt="logo" width="169"
-        height="28"><span class="splash-description text-center mt-5 mb-5">Login to your account</span>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend"><i class="icon s7-user"></i></div>
-            <input class="form-control" id="username" type="text" placeholder="Username" autocomplete="off"
-              formControlName="username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
-            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-              <div *ngIf="f.username.errors.required">Username is required</div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend"><i class="icon s7-lock"></i></div>
-            <input class="form-control" id="password" type="password" placeholder="Password" formControlName="password"
-              [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+<!-- TODO: translation -->
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-lg-5 col-md-8 mx-auto mt-md-5 p-5 border rounded bg-white">
 
-            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-              <div *ngIf="f.password.errors.required">Password is required</div>
+      <div class="border-bottom pb-4 text-center">
+        <!-- <img src="/img/logo.svg" class="logo"> -->
+        <h1>GO-Code</h1>
+      </div>
+
+      <div class="mt-4 mb-1">
+        <div class="text-center">
+          <h4>Logowanie</h4>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="onLogin()">
+          <div class="form-group">
+            <input formControlName="email" class="form-control valid" type="text" placeholder="Nazwa użytkownika" />
+            <span *ngIf="(form.get('email').touched || submitted) && form.get('email').hasError('required')" class="errors">
+              Field is required
+            </span>
+            <span *ngIf="(form.get('email').touched || submitted) && form.get('email').hasError('email')" class="errors">
+              Field is not valid email
+            </span>
+          </div>
+          <div class="form-group">
+            <input formControlName="password" class="form-control valid" type="password" placeholder="Hasło" />
+            <span *ngIf="(form.get('password').touched || submitted) && form.get('password').hasError('required')" class="errors">
+              Field is required
+            </span>
+            
+          </div>
+
+          <div class="d-flex justify-content-between align-content-center align-items-center">
+            <div class="form-group mb-0">
+              <p class="mb-0 mt-0">
+                <!-- TODO: href -->
+                <a id="forgot-password" href="/Identity/Account/ForgotPassword">Zapomniałeś hasła?</a>
+              </p>
+            </div>
+            <div class="form-group mb-0">
+              <button type="submit" id="btn-login" class="px-4 btn btn-primary">
+                Zaloguj się
+              </button>
             </div>
           </div>
-        </div>
-        <div class="form-group login-submit"><button type="submit" class="btn btn-lg btn-primary btn-block">Login</button></div>
-        <div class="form-group row login-tools">
-          <div class="col-sm-6 login-remember">
-            <label class="custom-control custom-checkbox mt-2">
-              <input class="custom-control-input" type="checkbox"><span class="custom-control-label">Remember me</span>
-            </label>
-          </div>
-          <div class="col-sm-6 pt-2 text-sm-right login-forgot-password"><a href="pages-forgot-password.php">Forgot
-              Password?</a></div>
-        </div>
-      </form>
-      <div class="out-links"><a href="#">© 2018 Your Company</a></div>
+        </form>
+      </div>
+
     </div>
   </div>
 </div>
