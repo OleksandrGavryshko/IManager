@@ -17,19 +17,19 @@ namespace IManager.Controllers
     public class AuthController : BaseController
     {
         [HttpPost]
-        public async Task<BaseMediatorResponse<bool>> SignUp(CreateUserCommand command)
+        public async Task<AppResponse<bool>> SignUp(CreateUserCommand command)
         {
             return await Mediator.Send(command);
         }
 
         [HttpPost]
-        public async Task<BaseMediatorResponse<SignInCommandResponse>> SignIn(SignInCommand command)
+        public async Task<AppResponse<SignInCommandResponse>> SignIn(SignInCommand command)
         { 
             return await Mediator.Send(command);
         }
 
         [HttpPost]
-        public async Task<BaseMediatorResponse<SignOutCommandResponse>> SignOut(SignOutCommand command)
+        public async Task<AppResponse<SignOutCommandResponse>> SignOut(SignOutCommand command)
         {
             return await Mediator.Send(command);
         }

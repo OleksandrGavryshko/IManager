@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace IManager.Application.Areas.Identity.Commands
 {
-    public class CreateUserCommand : IRequest<BaseMediatorResponse<bool>>
+    public class CreateUserCommand : IRequest<AppResponse<bool>>
     {
         public string Email { get; set; }
         public string Password { get; set; }
     }
 
-    class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseMediatorResponse<bool>>
+    class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, AppResponse<bool>>
     {
         private readonly IIdentityService identityService;
 
@@ -25,9 +25,9 @@ namespace IManager.Application.Areas.Identity.Commands
             this.identityService = identityService;
         }
 
-        public async Task<BaseMediatorResponse<bool>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<AppResponse<bool>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var response = new BaseMediatorResponse<bool>();
+            var response = new AppResponse<bool>();
 
             try
             {

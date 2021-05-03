@@ -28,9 +28,9 @@ namespace IManager.Persistence.Identity
             _signInManager = signInManager;
         }
 
-        public async Task<Response<bool>> CreateUserAsync(ApplicationUser user, string password)
+        public async Task<IdentityResponse<bool>> CreateUserAsync(ApplicationUser user, string password)
         {
-            var response = new Response<bool>(false);
+            var response = new IdentityResponse<bool>(false);
                  
             IdentityResult userCreateResult = await _userManager.CreateAsync(user, password);
 
@@ -42,9 +42,9 @@ namespace IManager.Persistence.Identity
             return response;
         }
 
-        public async Task<Response<ApplicationUser>> SignInAsync(string login, string password)
+        public async Task<IdentityResponse<ApplicationUser>> SignInAsync(string login, string password)
         {
-            var response = new Response<ApplicationUser>(null);
+            var response = new IdentityResponse<ApplicationUser>(null);
 
             response.Result = _userManager.Users.SingleOrDefault(u => u.UserName == login);
             if (response.Result is null)
@@ -63,7 +63,7 @@ namespace IManager.Persistence.Identity
 
         public async Task SignOutAsync(string login)
         {
-            var response = new Response<ApplicationUser>(null);
+            var response = new IdentityResponse<ApplicationUser>(null);
 
 
             await _signInManager.SignOutAsync();

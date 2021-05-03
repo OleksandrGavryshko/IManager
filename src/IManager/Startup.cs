@@ -82,7 +82,7 @@ namespace IManager
             app.UseCors(options =>
             {
                 options
-                .WithOrigins("http://localhost:4200")
+                .WithOrigins("http://localhost:4200", "http://localhost:2100") // TODO: to config || read about cors
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -93,6 +93,8 @@ namespace IManager
                 // app.UseDatabaseErrorPage();
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseApplication();
 
             app.UseHttpsRedirection();
             app.UseRouting();

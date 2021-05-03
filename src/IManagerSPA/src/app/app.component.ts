@@ -1,5 +1,6 @@
+import { SnotifyService, ToastDefaults } from 'ng-snotify';
+
 import { Component } from '@angular/core';
-import { SnotifyService } from 'ng-snotify';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,15 @@ export class AppComponent {
   title = 'IManagerSPA';
 
   constructor(
-    private snotifyService: SnotifyService
+    private _snotifyService: SnotifyService
   ) {
+    this.configureSnotify();
+  }
+
+  private configureSnotify(): void {
+    const snotifyConfig = ToastDefaults;
+    snotifyConfig.toast.timeout = 5000;
+
+    this._snotifyService.setDefaults(snotifyConfig);
   }
 }

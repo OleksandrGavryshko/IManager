@@ -1,13 +1,15 @@
-﻿using System;
+﻿using IManager.Common.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace IManager.Common.Models.Application
 {
-    public class BaseMediatorResponse<ResponseData>
+    public class AppResponse<ResponseData> : IErrorResponce
     {
-        public BaseMediatorResponse()
+        public AppResponse()
         {
+             Errors = new List<string>();
             //ValidationResult = new FluentValidation.Results.ValidationResult();
         }
 

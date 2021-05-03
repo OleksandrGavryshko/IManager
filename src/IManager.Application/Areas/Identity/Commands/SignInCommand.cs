@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace IManager.Application.Areas.Identity.Commands
 {
-    public class SignInCommand : IRequest<BaseMediatorResponse<SignInCommandResponse>>
+    public class SignInCommand : IRequest<AppResponse<SignInCommandResponse>>
     {
         public string Email { get; set; }
 
@@ -19,7 +19,7 @@ namespace IManager.Application.Areas.Identity.Commands
 
         
 
-        class SignInCommandHandler :  IRequestHandler<SignInCommand, BaseMediatorResponse<SignInCommandResponse>>
+        class SignInCommandHandler :  IRequestHandler<SignInCommand, AppResponse<SignInCommandResponse>>
         {
             private readonly AppSettings appSettings;
             private readonly IIdentityService identityService;
@@ -32,18 +32,24 @@ namespace IManager.Application.Areas.Identity.Commands
                 this.tokenManager = tokenManager;
             }
 
-            public async Task<BaseMediatorResponse<SignInCommandResponse>> Handle(SignInCommand request, CancellationToken cancellationToken)
+            public async Task<AppResponse<SignInCommandResponse>> Handle(SignInCommand request, CancellationToken cancellationToken)
             {
-                var response = new BaseMediatorResponse<SignInCommandResponse>();
+                var response = new AppResponse<SignInCommandResponse>();
 
-                try
-                {
+                //try
+                //{
                     var signInResponse = await identityService.SignInAsync(request.Email, request.Password);
 
                     if (signInResponse.Errors != null && signInResponse.Errors.Count > 0)
                     {
-                        response.Errors = signInResponse.Errors;
-                        return response;
+                        string error = string.Empty;
+                        foreach (var item in signInResponse.Errors)
+                            error += item + "\n";
+
+                        throw new Exception(error);
+
+                        //response.Errors = signInResponse.Errors;
+                        //return response;
                     }
 
                     response.Result = new SignInCommandResponse();
@@ -53,13 +59,12 @@ namespace IManager.Application.Areas.Identity.Commands
                     var roles = new List<string> { "user" };
                     response.Result.Token = tokenManager.GenerateToken(response.Result.User, roles, appSettings.JwtSettings);
 
-
-                }
-                catch (Exception ex)
-                {
-                    response.Errors = new List<string> { ex.Message };
-                    //todo:logError, handl error
-                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    response.Errors = new List<string> { ex.Message };
+                //    //todo:logError, handl error
+                //}
 
                 return response;
             }

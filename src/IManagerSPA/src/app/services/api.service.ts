@@ -15,9 +15,9 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface IAuthClient {
-    signUp(command: CreateUserCommand): Observable<BaseMediatorResponseOfBoolean>;
-    signIn(command: SignInCommand): Observable<BaseMediatorResponseOfSignInCommandResponse>;
-    signOut(command: SignOutCommand): Observable<BaseMediatorResponseOfSignOutCommandResponse>;
+    signUp(command: CreateUserCommand): Observable<AppResponseOfBoolean>;
+    signIn(command: SignInCommand): Observable<AppResponseOfSignInCommandResponse>;
+    signOut(command: SignOutCommand): Observable<AppResponseOfSignOutCommandResponse>;
 }
 
 @Injectable()
@@ -31,7 +31,7 @@ export class AuthClient implements IAuthClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    signUp(command: CreateUserCommand): Observable<BaseMediatorResponseOfBoolean> {
+    signUp(command: CreateUserCommand): Observable<AppResponseOfBoolean> {
         let url_ = this.baseUrl + "/api/Auth/SignUp";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -54,14 +54,14 @@ export class AuthClient implements IAuthClient {
                 try {
                     return this.processSignUp(<any>response_);
                 } catch (e) {
-                    return <Observable<BaseMediatorResponseOfBoolean>><any>_observableThrow(e);
+                    return <Observable<AppResponseOfBoolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<BaseMediatorResponseOfBoolean>><any>_observableThrow(response_);
+                return <Observable<AppResponseOfBoolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processSignUp(response: HttpResponseBase): Observable<BaseMediatorResponseOfBoolean> {
+    protected processSignUp(response: HttpResponseBase): Observable<AppResponseOfBoolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -72,7 +72,7 @@ export class AuthClient implements IAuthClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = BaseMediatorResponseOfBoolean.fromJS(resultData200);
+            result200 = AppResponseOfBoolean.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -80,10 +80,10 @@ export class AuthClient implements IAuthClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<BaseMediatorResponseOfBoolean>(<any>null);
+        return _observableOf<AppResponseOfBoolean>(<any>null);
     }
 
-    signIn(command: SignInCommand): Observable<BaseMediatorResponseOfSignInCommandResponse> {
+    signIn(command: SignInCommand): Observable<AppResponseOfSignInCommandResponse> {
         let url_ = this.baseUrl + "/api/Auth/SignIn";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -106,14 +106,14 @@ export class AuthClient implements IAuthClient {
                 try {
                     return this.processSignIn(<any>response_);
                 } catch (e) {
-                    return <Observable<BaseMediatorResponseOfSignInCommandResponse>><any>_observableThrow(e);
+                    return <Observable<AppResponseOfSignInCommandResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<BaseMediatorResponseOfSignInCommandResponse>><any>_observableThrow(response_);
+                return <Observable<AppResponseOfSignInCommandResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processSignIn(response: HttpResponseBase): Observable<BaseMediatorResponseOfSignInCommandResponse> {
+    protected processSignIn(response: HttpResponseBase): Observable<AppResponseOfSignInCommandResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -124,7 +124,7 @@ export class AuthClient implements IAuthClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = BaseMediatorResponseOfSignInCommandResponse.fromJS(resultData200);
+            result200 = AppResponseOfSignInCommandResponse.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -132,10 +132,10 @@ export class AuthClient implements IAuthClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<BaseMediatorResponseOfSignInCommandResponse>(<any>null);
+        return _observableOf<AppResponseOfSignInCommandResponse>(<any>null);
     }
 
-    signOut(command: SignOutCommand): Observable<BaseMediatorResponseOfSignOutCommandResponse> {
+    signOut(command: SignOutCommand): Observable<AppResponseOfSignOutCommandResponse> {
         let url_ = this.baseUrl + "/api/Auth/SignOut";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -158,14 +158,14 @@ export class AuthClient implements IAuthClient {
                 try {
                     return this.processSignOut(<any>response_);
                 } catch (e) {
-                    return <Observable<BaseMediatorResponseOfSignOutCommandResponse>><any>_observableThrow(e);
+                    return <Observable<AppResponseOfSignOutCommandResponse>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<BaseMediatorResponseOfSignOutCommandResponse>><any>_observableThrow(response_);
+                return <Observable<AppResponseOfSignOutCommandResponse>><any>_observableThrow(response_);
         }));
     }
 
-    protected processSignOut(response: HttpResponseBase): Observable<BaseMediatorResponseOfSignOutCommandResponse> {
+    protected processSignOut(response: HttpResponseBase): Observable<AppResponseOfSignOutCommandResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -176,7 +176,7 @@ export class AuthClient implements IAuthClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = BaseMediatorResponseOfSignOutCommandResponse.fromJS(resultData200);
+            result200 = AppResponseOfSignOutCommandResponse.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -184,7 +184,7 @@ export class AuthClient implements IAuthClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<BaseMediatorResponseOfSignOutCommandResponse>(<any>null);
+        return _observableOf<AppResponseOfSignOutCommandResponse>(<any>null);
     }
 }
 
@@ -301,11 +301,11 @@ export class TestClient implements ITestClient {
     }
 }
 
-export class BaseMediatorResponseOfBoolean implements IBaseMediatorResponseOfBoolean {
+export class AppResponseOfBoolean implements IAppResponseOfBoolean {
     result?: boolean;
     errors?: string[] | undefined;
 
-    constructor(data?: IBaseMediatorResponseOfBoolean) {
+    constructor(data?: IAppResponseOfBoolean) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -325,9 +325,9 @@ export class BaseMediatorResponseOfBoolean implements IBaseMediatorResponseOfBoo
         }
     }
 
-    static fromJS(data: any): BaseMediatorResponseOfBoolean {
+    static fromJS(data: any): AppResponseOfBoolean {
         data = typeof data === 'object' ? data : {};
-        let result = new BaseMediatorResponseOfBoolean();
+        let result = new AppResponseOfBoolean();
         result.init(data);
         return result;
     }
@@ -344,7 +344,7 @@ export class BaseMediatorResponseOfBoolean implements IBaseMediatorResponseOfBoo
     }
 }
 
-export interface IBaseMediatorResponseOfBoolean {
+export interface IAppResponseOfBoolean {
     result?: boolean;
     errors?: string[] | undefined;
 }
@@ -389,11 +389,11 @@ export interface ICreateUserCommand {
     password?: string | undefined;
 }
 
-export class BaseMediatorResponseOfSignInCommandResponse implements IBaseMediatorResponseOfSignInCommandResponse {
+export class AppResponseOfSignInCommandResponse implements IAppResponseOfSignInCommandResponse {
     result?: SignInCommandResponse | undefined;
     errors?: string[] | undefined;
 
-    constructor(data?: IBaseMediatorResponseOfSignInCommandResponse) {
+    constructor(data?: IAppResponseOfSignInCommandResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -413,9 +413,9 @@ export class BaseMediatorResponseOfSignInCommandResponse implements IBaseMediato
         }
     }
 
-    static fromJS(data: any): BaseMediatorResponseOfSignInCommandResponse {
+    static fromJS(data: any): AppResponseOfSignInCommandResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new BaseMediatorResponseOfSignInCommandResponse();
+        let result = new AppResponseOfSignInCommandResponse();
         result.init(data);
         return result;
     }
@@ -432,7 +432,7 @@ export class BaseMediatorResponseOfSignInCommandResponse implements IBaseMediato
     }
 }
 
-export interface IBaseMediatorResponseOfSignInCommandResponse {
+export interface IAppResponseOfSignInCommandResponse {
     result?: SignInCommandResponse | undefined;
     errors?: string[] | undefined;
 }
@@ -636,11 +636,11 @@ export interface ISignInCommand {
     password?: string | undefined;
 }
 
-export class BaseMediatorResponseOfSignOutCommandResponse implements IBaseMediatorResponseOfSignOutCommandResponse {
+export class AppResponseOfSignOutCommandResponse implements IAppResponseOfSignOutCommandResponse {
     result?: SignOutCommandResponse | undefined;
     errors?: string[] | undefined;
 
-    constructor(data?: IBaseMediatorResponseOfSignOutCommandResponse) {
+    constructor(data?: IAppResponseOfSignOutCommandResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -660,9 +660,9 @@ export class BaseMediatorResponseOfSignOutCommandResponse implements IBaseMediat
         }
     }
 
-    static fromJS(data: any): BaseMediatorResponseOfSignOutCommandResponse {
+    static fromJS(data: any): AppResponseOfSignOutCommandResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new BaseMediatorResponseOfSignOutCommandResponse();
+        let result = new AppResponseOfSignOutCommandResponse();
         result.init(data);
         return result;
     }
@@ -679,7 +679,7 @@ export class BaseMediatorResponseOfSignOutCommandResponse implements IBaseMediat
     }
 }
 
-export interface IBaseMediatorResponseOfSignOutCommandResponse {
+export interface IAppResponseOfSignOutCommandResponse {
     result?: SignOutCommandResponse | undefined;
     errors?: string[] | undefined;
 }

@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace IManager.Common.Models
 {
-    public class Response<ResultType>
+    public class IdentityResponse<ResultType>
     {
-        public Response(ResultType result) : this(result, new string[] { }) { }
+        public IdentityResponse(ResultType result) : this(result, new string[] { }) { }
 
-        public Response(ResultType result, IEnumerable<string> errors)
+        public IdentityResponse(ResultType result, IEnumerable<string> errors)
         {
             Result = result;
             Errors = errors.ToList();

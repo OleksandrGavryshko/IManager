@@ -6,15 +6,17 @@ import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { AccountModule } from './modules/account/account.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { AuthInterceptor } from './auth/auth.interceptor';
+import { AuthInterceptor } from './common/interceptors/auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CommonModule } from '@angular/common';
+import { ErrorInterceptor } from './common/interceptors/error.interceptor';
 import { HeaderComponent } from './header/header.component';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { StartComponent } from './start/start.component';
+import { GlobalErrorHandler } from './common/interceptors/errorhandl';
 
 @NgModule({
   declarations: [
@@ -37,9 +39,15 @@ import { StartComponent } from './start/start.component';
   ],
   providers: [
     TestClient,
+    {provide: ErrorHandler, useClass: GlobalErrorHandler},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     },
     {

@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace IManager.Application.Areas.Identity.Commands
 {
-    public class SignOutCommand : IRequest<BaseMediatorResponse<SignOutCommandResponse>>
+    public class SignOutCommand : IRequest<AppResponse<SignOutCommandResponse>>
     {
-        class SignOutCommandHandler : IRequestHandler<SignOutCommand, BaseMediatorResponse<SignOutCommandResponse>>
+        class SignOutCommandHandler : IRequestHandler<SignOutCommand, AppResponse<SignOutCommandResponse>>
         {
             private readonly AppSettings appSettings;
             private readonly IIdentityService identityService;
@@ -25,9 +25,9 @@ namespace IManager.Application.Areas.Identity.Commands
                 this.tokenManager = tokenManager;
             }
 
-            public async Task<BaseMediatorResponse<SignOutCommandResponse>> Handle(SignOutCommand request, CancellationToken cancellationToken)
+            public async Task<AppResponse<SignOutCommandResponse>> Handle(SignOutCommand request, CancellationToken cancellationToken)
             {
-                var response = new BaseMediatorResponse<SignOutCommandResponse>();
+                var response = new AppResponse<SignOutCommandResponse>();
 
                 try
                 {
