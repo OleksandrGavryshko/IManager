@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,30 +6,36 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
-    // TODO: localstorrage ?
-    // private _token: string;
+    public userIsLoggedIn: BehaviorSubject<boolean>;
 
-    constructor() { }
-
+    constructor() {
+        this.userIsLoggedIn = new BehaviorSubject(false);
+        const token = this.getToken();
+        if (token && token.length > 0)
+            this.userIsLoggedIn.next(true);
+    }
 
     public setToken(token: string) {
-        // this._token = token;
         localStorage.setItem('token', token);
+        this.userIsLoggedIn.next(true);
     }
 
     public getToken(): string {
         return localStorage.getItem('token');
-        // return this._token;
     }
 
     public tokenExist(): boolean {
-        return localStorage.getItem('token')?.length > 0;
-        // return this._token?.length > 0;
+        const tokenExist = localStorage.getItem('token')?.length > 0;
+
+        if (!tokenExist && this.userIsLoggedIn.value)
+            this.userIsLoggedIn.next(false);
+
+        return tokenExist;
     }
 
     public removeToken(): void {
         localStorage.removeItem('token');
-        // this._token = null;
+        this.userIsLoggedIn.next(false);
     }
 
 }

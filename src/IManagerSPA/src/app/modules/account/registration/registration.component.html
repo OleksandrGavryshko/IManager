@@ -15,24 +15,21 @@
   
           <form [formGroup]="form" (ngSubmit)="onRegister()">
             <div class="form-group">
-              <input formControlName="email" class="form-control valid" type="text" placeholder="Nazwa użytkownika" />
-              <span *ngIf="(form.get('email').touched || submitted) && form.get('email').hasError('required')" class="errors">
-                Field is required
-              </span>
-              <span *ngIf="(form.get('email').touched || submitted) && form.get('email').hasError('email')" class="errors">
-                Field is not valid email
-              </span>
-            </div>
-            <div class="form-group">
-              <input formControlName="password" class="form-control valid" type="password" placeholder="Hasło" />
-              <span *ngIf="(form.get('password').touched || submitted) && form.get('password').hasError('required')" class="errors">
-                Field is required
-              </span>
-              
+              <input  formControlName="email" class="form-control" type="text" placeholder="Nazwa użytkownika" [ngClass]="{ 'is-invalid': (form.get('email').touched || submitted) && form.get('email').errors }" />
+              <div *ngIf="(form.get('email').touched || submitted) && form.get('email').errors" class="invalid-feedback">
+                  <div *ngIf="form.get('email').hasError('required')">First Name is required</div>
+                  <div *ngIf="form.get('email').hasError('email')">Field is not valid email</div>
+              </div>
             </div>
   
+            <div class="form-group">
+              <input  formControlName="password" class="form-control" type="password" placeholder="Hasło" [ngClass]="{ 'is-invalid': (form.get('password').touched || submitted) && form.get('password').errors }" />
+              <div *ngIf="(form.get('password').touched || submitted) && form.get('password').errors" class="invalid-feedback">
+                  <div *ngIf="form.get('password').hasError('required')">Field is required</div>
+              </div>
+            </div>
+              
             <div class="d-flex justify-content-between align-content-center align-items-center">
-             
               <div class="form-group mb-0">
                 <button type="submit" id="btn-login" class="px-4 btn btn-primary">
                   Zarejestruj się

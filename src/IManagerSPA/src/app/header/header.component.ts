@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { AuthService } from '../common/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,52 +10,57 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  public navbarShrinked: boolean;
-  collapsed = true;
-isStartPage = false;
+  public navbarShrinked: boolean = false;;
+  public collapsed: boolean = true;
+  public isStartPage: boolean = false;
+  public userIsLoggedIn: boolean;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    private router: Router
-  ) {
-    this.navbarShrinked = false;
-  }
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
-    this.router.events
-    .subscribe(event => {
-      if(event instanceof NavigationEnd){
-        if(event.urlAfterRedirects.includes('start')){
-          this.isStartPage = true;
-        } else{
-          this.isStartPage = false;
-        }
-      }
-    })
+    this.isUserLoggedIn();
+    this.onRouteChange();
   }
 
-
-  toggleCollapsed(): void {
+  public toggleCollapsed(): void {
     this.collapsed = !this.collapsed;
   }
 
-  @HostListener('window:scroll', ['$event']) // for window scroll events
-  onScroll(event) {
-    if(!this.isStartPage) return;
+  public onLogout(): void {
+    this.authService.removeToken();
+  }
 
-    // console.log(this.document.documentElement.scrollTop);
-    // console.log(this.mainNav.nativeElement.offsetTop);
+  @HostListener('window:scroll')
+  private onScroll(): void {
+    if (!this.isStartPage) return;
+
     if (this.document.documentElement.scrollTop > 100) {
       this.navbarShrinked = true;
     } else {
       this.navbarShrinked = false;
     }
-
-    //   if ($("#mainNav").offset().top > 100) {
-    //     $("#mainNav").addClass("navbar-shrink");
-    // } else {
-    //     $("#mainNav").removeClass("navbar-shrink");
-    // }
   }
 
+  private onRouteChange() {
+    this.router.events
+      .subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          if (event.urlAfterRedirects.includes('start')) {
+            this.isStartPage = true;
+          } else {
+            this.isStartPage = false;
+          }
+        }
+      });
+  }
+
+  private isUserLoggedIn(): void {
+    this.authService.userIsLoggedIn.subscribe(val => {
+      this.userIsLoggedIn = val;
+    })
+  }
 }
