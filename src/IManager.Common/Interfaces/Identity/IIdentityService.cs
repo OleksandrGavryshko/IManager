@@ -1,6 +1,5 @@
-﻿using IManager.Common.Models;
+﻿using IManager.Common.Models.Identity;
 using IManager.Domain.Entities.Identity;
-using System;
 using System.Threading.Tasks;
 
 namespace IManager.Common.Interfaces.Identity

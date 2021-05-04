@@ -7,11 +7,11 @@ using System.Text;
 
 namespace IManager.Persistence.Configurations
 {
-    class CountryConfiguration : IEntityTypeConfiguration<Country>
+    internal class CountryConfiguration : IEntityTypeConfiguration<Country>
     {
         public void Configure(EntityTypeBuilder<Country> builder)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

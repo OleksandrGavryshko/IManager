@@ -4,8 +4,8 @@ import { catchError, retry, tap } from "rxjs/operators";
 
 import { AuthService } from "../auth/auth.service";
 import { Injectable } from "@angular/core";
+import { NotifyService } from "src/app/services/notify.service";
 import { Router } from "@angular/router";
-import { SnotifyService } from "ng-snotify";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -13,7 +13,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     constructor(
         private _router: Router,
         private _authService: AuthService,
-        private _snotifyService: SnotifyService
+        private _notifyService: NotifyService
     ) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -50,6 +50,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     private handleServerSideError(error: HttpErrorResponse): boolean {
         let handled: boolean = false;
 
+        // TODO: check if 400 handler needed here?
         switch (error.status) {
             case 0:
                 this.handle0Error(error);
@@ -74,18 +75,15 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     private handle0Error(error: HttpErrorResponse): void {
         if (error?.message?.length > 0) {
-            this._snotifyService.error(error.message);
+            this._notifyService.error(error.message);
         }
     }
 
     private handle400Error(error: HttpErrorResponse): void {
-        // console.log(error);
-
         if (error.error instanceof Blob) {
-
             error.error.text().then(text => {
                 console.log(text);
-                this._snotifyService.error(text);
+                this._notifyService.error(text);
             });
         }
 

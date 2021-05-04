@@ -1,12 +1,11 @@
 import { AuthClient, SignInCommand } from 'src/app/services/api.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { ApiErrorHandler } from 'src/app/services/api-base-services/api-error-handler';
 import { AuthService } from 'src/app/common/auth/auth.service';
-import { FormatWidth } from '@angular/common';
-import { NgForm } from '@angular/forms';
+import { NotifyService } from 'src/app/services/notify.service';
 import { Router } from '@angular/router';
-import { SnotifyService } from 'ng-snotify';
 
 @Component({
   selector: 'app-login',
@@ -22,8 +21,9 @@ export class LoginComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _authClient: AuthClient,
     private _router: Router,
-    private _snotifyService: SnotifyService,
-    private _authService: AuthService
+    private _notifyService: NotifyService,
+    private _authService: AuthService,
+    private _apiErrorHandler : ApiErrorHandler
   ) { }
 
   ngOnInit(): void {
@@ -42,12 +42,7 @@ export class LoginComponent implements OnInit {
       const model = SignInCommand.fromJS(this.form.value);
 
       this._authClient.signIn(model).subscribe(response => {
-        //if (this.apiErrorHandler.errorsExistInResponse(response)) return;
-
-        if(response.errors && response.errors.length > 0){
-          response.errors.forEach(e=> this._snotifyService.error(e));
-          return;
-        }
+        if (this._apiErrorHandler.errorsExistInResponse(response)) return;
 
         this._authService.setToken(response.result.token);
         this._router.navigateByUrl('/');

@@ -1,4 +1,4 @@
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 
 import { NgModule } from '@angular/core';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -14,8 +14,6 @@ const routes: Routes = [
     path: 'start',
     component: StartComponent
   },
-
-
   {
     path: 'account',
     loadChildren: () => import('./modules/account/account.module').then(m => m.AccountModule)

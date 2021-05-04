@@ -6,15 +6,12 @@ namespace IManager.Common.Interfaces
 {
     public interface IErrorResponce
     {
-        public bool IsValid => Errors.Count > 0;
+        bool IsValid { get; }
 
         //public FluentValidation.Results.ValidationResult ValidationResult { get; set; }
 
         List<string> Errors { get; set; }
 
-        public void AddError(string errorMessage)
-        {
-            Errors.Add(errorMessage);
-        }
+        void AddError(string errorMessage);
     }
 }

@@ -1,12 +1,8 @@
 ﻿using IManager.Common.Interfaces.Identity;
-using IManager.Common.Models;
+using IManager.Common.Models.Identity;
 using IManager.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace IManager.Persistence.Identity
@@ -31,7 +27,7 @@ namespace IManager.Persistence.Identity
         public async Task<IdentityResponse<bool>> CreateUserAsync(ApplicationUser user, string password)
         {
             var response = new IdentityResponse<bool>(false);
-                 
+
             IdentityResult userCreateResult = await _userManager.CreateAsync(user, password);
 
             if (userCreateResult.Succeeded)
@@ -55,7 +51,7 @@ namespace IManager.Persistence.Identity
 
             var userSigninResult = await _userManager.CheckPasswordAsync(response.Result, password);
 
-            if(!userSigninResult)
+            if (!userSigninResult)
                 response.AddError("Incorrect password");
 
             return response;

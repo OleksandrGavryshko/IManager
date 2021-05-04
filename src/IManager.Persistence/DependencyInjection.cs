@@ -26,12 +26,12 @@ namespace IManager.Persistence
             var appSettings = configuration.GetAppSettings();
             InitDbContext(services, configuration, appSettings);
 
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>());
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.AddTransient<IIdentityService, IdentityService>();
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             return services;
@@ -51,7 +51,7 @@ namespace IManager.Persistence
 
             try
             {
-                var dbContext = services.GetRequiredService<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>();
+                var dbContext = services.GetRequiredService<ApplicationDbContext>();
 
                 if (dbContext.Database.IsSqlServer())
                 {
@@ -78,19 +78,19 @@ namespace IManager.Persistence
         {
             if (appSettings.UseInMemoryDatabase)
             {
-                services.AddDbContext<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>(options =>
+                services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseInMemoryDatabase(UseInMemoryDatabaseName)
                     );
             }
             else
             {
-                services.AddDbContext<ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>>(options =>
+                services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
                         configuration.GetConnectionString(DefaultConnectionName),
                         b =>
                         {
                             b.MigrationsHistoryTable(DefaultMigrationsTableName, DefaultSchema);
-                            b.MigrationsAssembly(typeof(ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>).Assembly.FullName);
+                            b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
                         }
                     ));
             }

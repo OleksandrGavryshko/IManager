@@ -17,5 +17,11 @@ namespace IManager.Common.Models.Application
         //public FluentValidation.Results.ValidationResult ValidationResult { get; set; }
 
         public List<string> Errors { get; set; }
+        public bool IsValid => !(Errors.Count > 0);
+
+        public void AddError(string errorMessage)
+        {
+            Errors.Add(errorMessage);
+        }
     }
 }

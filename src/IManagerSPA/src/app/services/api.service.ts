@@ -304,6 +304,7 @@ export class TestClient implements ITestClient {
 export class AppResponseOfBoolean implements IAppResponseOfBoolean {
     result?: boolean;
     errors?: string[] | undefined;
+    isValid?: boolean;
 
     constructor(data?: IAppResponseOfBoolean) {
         if (data) {
@@ -322,6 +323,7 @@ export class AppResponseOfBoolean implements IAppResponseOfBoolean {
                 for (let item of _data["errors"])
                     this.errors!.push(item);
             }
+            this.isValid = _data["isValid"];
         }
     }
 
@@ -340,6 +342,7 @@ export class AppResponseOfBoolean implements IAppResponseOfBoolean {
             for (let item of this.errors)
                 data["errors"].push(item);
         }
+        data["isValid"] = this.isValid;
         return data; 
     }
 }
@@ -347,6 +350,7 @@ export class AppResponseOfBoolean implements IAppResponseOfBoolean {
 export interface IAppResponseOfBoolean {
     result?: boolean;
     errors?: string[] | undefined;
+    isValid?: boolean;
 }
 
 export class CreateUserCommand implements ICreateUserCommand {
@@ -392,6 +396,7 @@ export interface ICreateUserCommand {
 export class AppResponseOfSignInCommandResponse implements IAppResponseOfSignInCommandResponse {
     result?: SignInCommandResponse | undefined;
     errors?: string[] | undefined;
+    isValid?: boolean;
 
     constructor(data?: IAppResponseOfSignInCommandResponse) {
         if (data) {
@@ -410,6 +415,7 @@ export class AppResponseOfSignInCommandResponse implements IAppResponseOfSignInC
                 for (let item of _data["errors"])
                     this.errors!.push(item);
             }
+            this.isValid = _data["isValid"];
         }
     }
 
@@ -428,6 +434,7 @@ export class AppResponseOfSignInCommandResponse implements IAppResponseOfSignInC
             for (let item of this.errors)
                 data["errors"].push(item);
         }
+        data["isValid"] = this.isValid;
         return data; 
     }
 }
@@ -435,6 +442,7 @@ export class AppResponseOfSignInCommandResponse implements IAppResponseOfSignInC
 export interface IAppResponseOfSignInCommandResponse {
     result?: SignInCommandResponse | undefined;
     errors?: string[] | undefined;
+    isValid?: boolean;
 }
 
 export class SignInCommandResponse implements ISignInCommandResponse {
@@ -639,6 +647,7 @@ export interface ISignInCommand {
 export class AppResponseOfSignOutCommandResponse implements IAppResponseOfSignOutCommandResponse {
     result?: SignOutCommandResponse | undefined;
     errors?: string[] | undefined;
+    isValid?: boolean;
 
     constructor(data?: IAppResponseOfSignOutCommandResponse) {
         if (data) {
@@ -657,6 +666,7 @@ export class AppResponseOfSignOutCommandResponse implements IAppResponseOfSignOu
                 for (let item of _data["errors"])
                     this.errors!.push(item);
             }
+            this.isValid = _data["isValid"];
         }
     }
 
@@ -675,6 +685,7 @@ export class AppResponseOfSignOutCommandResponse implements IAppResponseOfSignOu
             for (let item of this.errors)
                 data["errors"].push(item);
         }
+        data["isValid"] = this.isValid;
         return data; 
     }
 }
@@ -682,6 +693,7 @@ export class AppResponseOfSignOutCommandResponse implements IAppResponseOfSignOu
 export interface IAppResponseOfSignOutCommandResponse {
     result?: SignOutCommandResponse | undefined;
     errors?: string[] | undefined;
+    isValid?: boolean;
 }
 
 export class SignOutCommandResponse implements ISignOutCommandResponse {

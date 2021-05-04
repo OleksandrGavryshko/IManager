@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IManager.Persistence.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext<ApplicationUser, ApplicationRole, Guid>))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20200908163007_Initial")]
     partial class Initial
     {

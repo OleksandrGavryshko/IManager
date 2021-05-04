@@ -1,6 +1,7 @@
-import { SnotifyService, ToastDefaults } from 'ng-snotify';
+import { Component, ViewChild } from '@angular/core';
 
-import { Component } from '@angular/core';
+import { HeaderComponent } from './header/header.component';
+import { SnotifyService } from 'ng-snotify';
 
 @Component({
   selector: 'app-root',
@@ -8,18 +9,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'IManagerSPA';
+
+  public get useAppContainerClass(): boolean {
+    if (!this._headerComponent || this._headerComponent.isStartPage)
+      return false;
+
+    return true;
+  }
+
+  @ViewChild(HeaderComponent, { static: true })
+  private _headerComponent: HeaderComponent;
 
   constructor(
-    private _snotifyService: SnotifyService
-  ) {
-    this.configureSnotify();
-  }
+    public snotifyService: SnotifyService
+  ) { }
 
-  private configureSnotify(): void {
-    const snotifyConfig = ToastDefaults;
-    snotifyConfig.toast.timeout = 5000;
-
-    this._snotifyService.setDefaults(snotifyConfig);
-  }
 }

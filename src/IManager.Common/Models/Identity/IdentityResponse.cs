@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IManager.Common.Models
+namespace IManager.Common.Models.Identity
 {
     public class IdentityResponse<ResultType>
     {
