@@ -1,12 +1,12 @@
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
 
-import { AuthService } from "./auth.service";
+import { AuthService } from "src/app/common/auth/auth.service";
 import { Injectable } from "@angular/core";
 
 @Injectable({
     providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class GoToHomeModuleGuard implements CanActivate {
 
     constructor(
         private _router: Router,
@@ -15,13 +15,11 @@ export class AuthGuard implements CanActivate {
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         if (this._authService.tokenExist()) {
-            console.log('_authService.tokenExist');
-            return true;
+            this._router.navigate(['/home']);
+            return false;
         }
         else {
-            console.log('/account/login');
-            this._router.navigate(['/account/login']);
-            return false;
+            return true;
         }
     }
 }

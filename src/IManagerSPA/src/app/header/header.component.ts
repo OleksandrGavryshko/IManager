@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit {
 
   public onLogout(): void {
     this.authService.removeToken();
+    this.router.navigate(['/']);
   }
 
   @HostListener('window:scroll')
