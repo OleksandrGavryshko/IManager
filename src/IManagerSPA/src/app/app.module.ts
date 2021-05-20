@@ -6,6 +6,8 @@ import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 
 import { AccountModule } from './modules/account/account.module';
 import { AppComponent } from './app.component';
+import { AppContainerComponent } from './components/container/app-container/app-container.component';
+import { AppContainerHeaderComponent } from './components/container/app-container-header/app-container-header.component';
 import { AppRoutingModule } from './app.routing';
 import { AuthInterceptor } from './common/interceptors/auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,16 +15,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CommonModule } from '@angular/common';
 import { ErrorInterceptor } from './common/interceptors/error.interceptor';
-import { HeaderComponent } from './header/header.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { StartComponent } from './start/start.component';
+import { HomeComponent } from './components/home/home.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { StartContainerComponent } from './components/container/start-container/start-container.component';
+import { StartContainerHeaderComponent } from './components/container/start-container-header/start-container-header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     PageNotFoundComponent,
-    StartComponent
+    AppContainerComponent,
+    AppContainerHeaderComponent,
+    StartContainerComponent,
+    StartContainerHeaderComponent,
+    HomeComponent
   ],
   imports: [
     HttpClientModule,

@@ -1,6 +1,4 @@
-<div [ngClass]="{'app-container': useAppContainerClass }">
-  <app-header></app-header>
-  <router-outlet></router-outlet>
-</div>
+<app-start-container *ngIf="!authService.tokenExist()"></app-start-container>
+<app-container *ngIf="authService.tokenExist()"></app-container>
 
 <ng-snotify></ng-snotify>

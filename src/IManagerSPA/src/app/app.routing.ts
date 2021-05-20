@@ -2,9 +2,9 @@ import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './common/auth/auth.guard';
 import { GoToHomeModuleGuard } from './modules/home/guard/go-to-home-module.guard';
+import { HomeComponent } from './components/home/home.component';
 import { NgModule } from '@angular/core';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { StartComponent } from './start/start.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'start',
-    component: StartComponent,
+    component: HomeComponent,
     canActivate: [GoToHomeModuleGuard]
   },
   {

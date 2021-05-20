@@ -1,6 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-
-import { HeaderComponent } from './header/header.component';
+import { AuthService } from './common/auth/auth.service';
+import { Component } from '@angular/core';
 import { SnotifyService } from 'ng-snotify';
 
 @Component({
@@ -10,17 +9,8 @@ import { SnotifyService } from 'ng-snotify';
 })
 export class AppComponent {
 
-  public get useAppContainerClass(): boolean {
-    if (!this._headerComponent || this._headerComponent.isStartPage)
-      return false;
-
-    return true;
-  }
-
-  @ViewChild(HeaderComponent, { static: true })
-  private _headerComponent: HeaderComponent;
-
   constructor(
+    public authService: AuthService,
     public snotifyService: SnotifyService
   ) { }
 

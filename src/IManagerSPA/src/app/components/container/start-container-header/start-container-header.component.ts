@@ -1,14 +1,14 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AuthService } from '../common/auth/auth.service';
+import { AuthService } from 'src/app/common/auth/auth.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: 'app-start-container-header',
+  templateUrl: './start-container-header.component.html',
+  styleUrls: ['./start-container-header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class StartContainerHeaderComponent implements OnInit {
 
   public navbarShrinked: boolean = false;;
   public collapsed: boolean = true;
@@ -64,4 +64,5 @@ export class HeaderComponent implements OnInit {
       this.userIsLoggedIn = val;
     })
   }
+
 }
