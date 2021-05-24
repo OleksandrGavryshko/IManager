@@ -1,1 +1,27 @@
-<p>home-header works!</p>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a (click)="toggleSideBar()">
+            <i class="fas fa-bars fa-2x mr-2"></i>
+        </a>
+
+        <a class="navbar-brand" [routerLink]="['/']">
+            <img src="favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy" />
+            IManager
+        </a>
+
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation" (click)="toggleHeader()">
+                Menu
+                <i class="fas fa-bars ml-1"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive" [ngClass]="{'collapse': collapsed, 'navbar-collapse': true}">
+            <ul class="navbar-nav text-uppercase ml-auto">
+                <li class="nav-item" >
+                    <a class="nav-link js-scroll-trigger" (click)="onLogout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

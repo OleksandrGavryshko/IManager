@@ -6,8 +6,7 @@ import { NgModule } from '@angular/core';
 const routes: Routes = [
   {
     path: '',
-    component: DashboardComponent,
-    outlet: 'sub'
+    component: DashboardComponent
   }
 ];
 

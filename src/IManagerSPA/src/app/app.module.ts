@@ -8,6 +8,7 @@ import { AccountModule } from './modules/account/account.module';
 import { AppComponent } from './app.component';
 import { AppContainerComponent } from './components/container/app-container/app-container.component';
 import { AppContainerHeaderComponent } from './components/container/app-container-header/app-container-header.component';
+import { AppContainerSidebarComponent } from './components/container/app-container-sidebar/app-container-sidebar.component';
 import { AppRoutingModule } from './app.routing';
 import { AuthInterceptor } from './common/interceptors/auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,7 +29,8 @@ import { StartContainerHeaderComponent } from './components/container/start-cont
     AppContainerHeaderComponent,
     StartContainerComponent,
     StartContainerHeaderComponent,
-    HomeComponent
+    AppContainerSidebarComponent,
+    HomeComponent    
   ],
   imports: [
     HttpClientModule,

@@ -1,0 +1,14 @@
+.app-container {
+  padding-top: 3.5rem;
+}
+
+div.content {
+  margin-left: 200px;
+  padding: 1px 16px;
+}
+
+@media screen and (max-width: 700px) {
+  div.content {
+    margin-left: 0;
+  }
+}
