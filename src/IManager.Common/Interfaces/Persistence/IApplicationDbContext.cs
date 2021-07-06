@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace IManager.Common.Interfaces
+namespace IManager.Common.Interfaces.Persistence
 {
     public interface IApplicationDbContext
     {

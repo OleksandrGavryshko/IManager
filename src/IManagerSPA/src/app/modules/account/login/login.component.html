@@ -1,0 +1,55 @@
+<!-- TODO: translation -->
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-lg-5 col-md-8 mx-auto mt-md-5 p-5 border rounded bg-white">
+
+      <div class="border-bottom pb-4 text-center">
+        <!-- <img src="/img/logo.svg" class="logo"> -->
+        <h1>GO-Code</h1>
+      </div>
+
+      <div class="mt-4 mb-1">
+        <div class="text-center">
+          <h4>Logowanie</h4>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="onLogin()">
+
+          <div class="form-group">
+            <input formControlName="email" class="form-control" type="text" placeholder="Nazwa użytkownika" name="login"
+              [ngClass]="{ 'is-invalid': (form.get('email').touched || submitted) && form.get('email').errors }" />
+            <div *ngIf="(form.get('email').touched || submitted) && form.get('email').errors" class="invalid-feedback">
+              <div *ngIf="form.get('email').hasError('required')">First Name is required</div>
+              <div *ngIf="form.get('email').hasError('email')">Field is not valid email</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input formControlName="password" class="form-control" type="password" placeholder="Hasło" name="password"
+              [ngClass]="{ 'is-invalid': (form.get('password').touched || submitted) && form.get('password').errors }" />
+            <div *ngIf="(form.get('password').touched || submitted) && form.get('password').errors"
+              class="invalid-feedback">
+              <div *ngIf="form.get('password').hasError('required')">Field is required</div>
+            </div>
+          </div>
+
+
+          <div class="d-flex justify-content-between align-content-center align-items-center">
+            <div class="form-group mb-0">
+              <p class="mb-0 mt-0">
+                <!-- TODO: href -->
+                <!-- <a id="forgot-password" href="/Identity/Account/ForgotPassword">Zapomniałeś hasła?</a> -->
+              </p>
+            </div>
+            <div class="form-group mb-0">
+              <button type="submit" id="btn-login" class="px-4 btn btn-primary">
+                Zaloguj się
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

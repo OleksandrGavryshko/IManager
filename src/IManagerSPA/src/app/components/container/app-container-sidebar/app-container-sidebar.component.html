@@ -1,0 +1,28 @@
+<div class="sidebar">
+  <!-- <a class="active" href="#home">Home</a>
+  <a href="#news">News</a>
+  <a href="#contact">Contact</a>
+  <a href="#about">About</a> -->
+
+  <div *ngFor="let item of menu">
+    <ng-container
+      *ngTemplateOutlet="menu_for_ng; context: { menu: item }"
+    ></ng-container>
+  </div>
+
+  <ng-template #menu_for_ng let-menu="menu">
+    <a
+      [routerLink]="menu.router"
+      [ngClass]="{ active: isActive(menu) }"
+      (click)="onMenuClick(menu)"
+      >{{ menu?.name }}</a
+    >
+
+    <!-- render children -->
+    <div *ngFor="let item of menu?.children">
+      <ng-container
+        *ngTemplateOutlet="menu_for_ng; context: { menu: item }"
+      ></ng-container>
+    </div>
+  </ng-template>
+</div>

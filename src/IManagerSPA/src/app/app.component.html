@@ -1,0 +1,4 @@
+<app-start-container *ngIf="!authService.tokenExist()"></app-start-container>
+<app-container *ngIf="authService.tokenExist()"></app-container>
+
+<ng-snotify></ng-snotify>

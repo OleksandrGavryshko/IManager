@@ -1,0 +1,38 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" #mainNav
+        [ngClass]="{ 'navbar-shrink': navbarShrinked || !isStartPage }">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" [routerLink]="['/']">
+                <!-- <img src="assets/img/navbar-logo.svg" alt="..." /> -->
+                <img src="favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy" />
+                IManager
+            </a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation" (click)="toggleCollapsed()">
+                Menu
+                <i class="fas fa-bars ml-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive"
+                [ngClass]="{'collapse': collapsed, 'navbar-collapse': true}">
+                <ul class="navbar-nav text-uppercase ml-auto">
+                    <!-- <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#team">Team</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li> -->
+                    <!-- <li class="nav-item"> <app-login-button></app-login-button> </li> -->
+                    <li class="nav-item" *ngIf="!userIsLoggedIn">
+                        <a class="nav-link js-scroll-trigger" [routerLink]="['/account/login']">Login</a>
+                    </li>
+                    <li class="nav-item" *ngIf="!userIsLoggedIn">
+                        <a class="nav-link js-scroll-trigger" [routerLink]="['/account/register']">Register</a>
+                    </li>
+                    <li class="nav-item" *ngIf="userIsLoggedIn">
+                        <a class="nav-link js-scroll-trigger" (click)="onLogout()">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

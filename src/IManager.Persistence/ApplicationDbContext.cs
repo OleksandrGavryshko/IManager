@@ -1,23 +1,17 @@
-﻿using IManager.Common.Interfaces;
+﻿using IManager.Common.Interfaces.Persistence;
 using IManager.Domain.Entities;
 using IManager.Domain.Entities.Car;
+using IManager.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Internal;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace IManager.Persistence
 {
-    public class ApplicationDbContext<TUser, TRole, TKey> : IdentityDbContext<TUser,TRole, TKey>, IApplicationDbContext
-        where TUser : IdentityUser<TKey>
-        where TRole : IdentityRole<TKey>
-        where TKey : IEquatable<TKey>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IApplicationDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext<TUser, TRole, TKey>> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
 
@@ -27,7 +21,9 @@ namespace IManager.Persistence
         {
             base.OnModelCreating(builder);
 
-            builder.HasDefaultSchema("IMS");
+            builder.HasDefaultSchema(DependencyInjection.DefaultSchema);
+
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 
         public DbSet<Country> Countries { get; set; }
