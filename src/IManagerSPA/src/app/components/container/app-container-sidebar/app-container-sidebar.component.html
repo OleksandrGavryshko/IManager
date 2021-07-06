@@ -12,7 +12,7 @@
 
   <ng-template #menu_for_ng let-menu="menu">
     <a
-      [routerLink]="menu.router"
+      [routerLink]="menu.rout"
       [ngClass]="{ active: isActive(menu) }"
       (click)="onMenuClick(menu)"
       >{{ menu?.name }}</a

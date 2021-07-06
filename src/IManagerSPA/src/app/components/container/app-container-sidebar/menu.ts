@@ -4,14 +4,14 @@ export const menu: MenuElement[] = [
     {
         id: 1,
         rout: '',
-        name: 'Car',
+        name: 'Vehicles Module',
         icon: '',
         parentId: null,
         isGroup: true,
         children: [
             {
                 id: 2,
-                rout: '',
+                rout: 'vehicle/manufactures',
                 name: 'Manufacturers',
                 icon: '',
                 parentId: 1,
@@ -20,8 +20,8 @@ export const menu: MenuElement[] = [
             },
             {
                 id: 3,
-                rout: '',
-                name: 'My cars',
+                rout: 'vehicle',
+                name: 'My vehicles',
                 icon: '',
                 parentId: 1,
                 isGroup: false,
