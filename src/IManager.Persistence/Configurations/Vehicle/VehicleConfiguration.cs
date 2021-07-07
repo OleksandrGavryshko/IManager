@@ -28,11 +28,11 @@ namespace IManager.Persistence.Configurations.Vehicle
 
             builder.Property(x => x.VIN)
                 .HasMaxLength(50)
-                .HasDefaultValueSql(string.Empty);
+                .HasDefaultValueSql("''");
 
             builder.Property(x => x.RegistrationPlate)
                 .HasMaxLength(10)
-                .HasDefaultValueSql(string.Empty);
+                .HasDefaultValueSql("''");
         }
     }
 }
