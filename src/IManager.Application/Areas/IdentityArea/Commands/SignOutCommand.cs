@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace IManager.Application.Areas.Identity.Commands
+namespace IManager.Application.Areas.IdentityArea.Commands
 {
     public class SignOutCommand : IRequest<AppResponse<SignOutCommandResponse>>
     {

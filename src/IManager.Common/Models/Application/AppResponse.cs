@@ -13,6 +13,13 @@ namespace IManager.Common.Models.Application
             //ValidationResult = new FluentValidation.Results.ValidationResult();
         }
 
+        public AppResponse(ResponseData result)
+        {
+            Result = result;
+            Errors = new List<string>();
+            //ValidationResult = new FluentValidation.Results.ValidationResult();
+        }
+
         public ResponseData Result { get; set; }
         //public FluentValidation.Results.ValidationResult ValidationResult { get; set; }
 

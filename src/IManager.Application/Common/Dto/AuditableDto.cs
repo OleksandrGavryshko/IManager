@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace IManager.Domain.Common
+namespace IManager.Application.Common.Dto
 {
-    public abstract class AuditableEntity : CommonEntity
+    public abstract class AuditableDto : CommonDto
     {
-
         public string CreatedBy { get; set; }
 
         public DateTime Created { get; set; }
