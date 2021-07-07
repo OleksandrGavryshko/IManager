@@ -1,7 +1,7 @@
 ﻿using IManager.Common.Interfaces.Persistence;
 using IManager.Domain.Entities;
-using IManager.Domain.Entities.Car;
 using IManager.Domain.Entities.Identity;
+using IManager.Domain.Entities.Vehicle;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +27,8 @@ namespace IManager.Persistence
         }
 
         public DbSet<Country> Countries { get; set; }
-        public DbSet<Car> Cars { get; set; }
+        public DbSet<Manufacture> Manufactures { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
 
 
     }

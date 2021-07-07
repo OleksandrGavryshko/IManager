@@ -1,5 +1,5 @@
 ﻿using IManager.Domain.Entities;
-using IManager.Domain.Entities.Car;
+using IManager.Domain.Entities.Vehicle;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,8 +11,9 @@ namespace IManager.Common.Interfaces.Persistence
     public interface IApplicationDbContext
     {
         DbSet<Country> Countries { get; set; }
-        DbSet<Car> Cars { get; set; }
 
+         DbSet<Manufacture> Manufactures { get; set; }
+         DbSet<Vehicle> Vehicles { get; set; }
 
         //Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

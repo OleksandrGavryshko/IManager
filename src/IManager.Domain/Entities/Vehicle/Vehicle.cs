@@ -3,17 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace IManager.Domain.Entities.Car
+namespace IManager.Domain.Entities.Vehicle
 {
-    public class Car : AuditableEntity
+    public class Vehicle : AuditableEntity
     {
-        public string Manufacturer { get; set; }
+        public int ManufactureId { get; set; }
+
         public string Model { get; set; }
+        public string Description { get; set; }
         public DateTime ProductionDate { get; set; }
         public DateTime PurchaseDate { get; set; }
         public string VIN { get; set; }
         public string RegistrationPlate { get; set; }
 
+        public Manufacture Manufacture { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using IManager.Domain.Entities;
+using IManager.Persistence.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -7,11 +8,19 @@ using System.Text;
 
 namespace IManager.Persistence.Configurations
 {
-    internal class CountryConfiguration : IEntityTypeConfiguration<Country>
+    internal class CountryConfiguration : AuditableConfiguration<Country>
     {
-        public void Configure(EntityTypeBuilder<Country> builder)
+        public override void ConfigureEntity(EntityTypeBuilder<Country> builder)
         {
-            //throw new NotImplementedException();
+            builder.Property(x => x.Code)
+                .IsRequired()
+                .IsUnicode()
+                .HasMaxLength(100);
+
+            builder.Property(x => x.Name)
+                .IsRequired()
+                .IsUnicode()
+                .HasMaxLength(300);
         }
     }
 }

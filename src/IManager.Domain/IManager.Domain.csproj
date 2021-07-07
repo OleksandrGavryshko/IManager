@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Fuel\" />
+    <Compile Remove="Entities\Fuel\**" />
+    <EmbeddedResource Remove="Entities\Fuel\**" />
+    <None Remove="Entities\Fuel\**" />
   </ItemGroup>
 
   <ItemGroup>
